@@ -1,0 +1,7 @@
+working directory --> where we can do changes the file in a project is called working directory 
+
+staging area  --->  this is place where we can store before commiting any changes to remote repositry
+                       This is where you stage files that you want to include in your next commit.
+
+                       
+
