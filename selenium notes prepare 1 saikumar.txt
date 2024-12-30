@@ -1,0 +1,3246 @@
+driver.manage().window().maximize() -----used the maximize the window
+driver.close() ----used to the close the single browser
+driver.getTitle()--- used to get the title of the page
+driver.get(url) ---- used  to open web site
+
+
+Get() commands:
+----------------
+get("url")           --used to open the url on the browser
+getTitle()       ---used to the return the title of the page
+getPageSource()  --return source code of the page 
+getCurrentUrl()  ---used to return the url of current page
+getWindowHandle()  --- returns id of the single window browser  --->  it will generate at run time --  it will change based on refreshing -- return in the form of string
+getWindowHandles() --returns ids of the multiple window browser
+
+driver.switchTo().window(ids of getWindowHandle);
+
+
+
+getText()    ----used to return text value of on element through web element 
+
+ex:
+driver.findElemet(By.anyMethod()).getText();
+
+browser commands()
+------------------
+close() ---close current window
+quit()  ---close multiple window/browser
+
+navigation commands()
+--------------------
+navigate().forward()  ---used to go forward
+navigate().back()
+navigate().to("url") -----used to open the url on the browser
+navigate().refresh()
+
+driver.get() -------                accepts url in string format only 
+driver.navigate().to()-----   accepts url in the string format and URL object format 
+ex driver.navigate().forward();
+
+conditional commands  access these commands through WebElement
+--------------------------------
+always return true or false
+
+isDisplayed()--check whether the element is displayed or not if displayed it will return true
+isEnabled() ---used for text box or input and check for the text is entering or not ( enabled or not)
+isSelected() ---used for radio buttons and check boxes
+
+
+
+
+
+wait commands
+---------------------------
+Synchronization
+
+Thread.sleep("1000");
+------------------------------
+in java we have a thread class in which have a sleep method in millisecond 
+we are not using this method  have some disadvantage 
+
+Advantage:
+----------------  
+easy to use 
+
+Disadvantage :
+-------------------
+if the time is not sufficient then you will get exception
+it will wait for maximum time out. this will reduce the performance script 
+multiple times
+
+
+NoSuchElementException  ---- Element is not present on the page  because of synchronizing problem 
+ElementNotFoundException -- locator is incorrect on that time we get this exception need to right correct xpath
+
+implicitwait
+expilicitwait
+
+implicitwait:
+------------------
+wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+Advantage:
+--------------
+single time/ one statement 
+ if the element is available it will not wait till maximum time 
+applicable for all the elements we just write once 
+easy to use
+
+Disadvantage
+--------------------
+if the time is not sufficient then we will get exception
+performance issue is not caught
+
+expilicitwait:
+------------------
+Declaration
+
+use 
+
+Setting Explicit Wait is important in cases where there are certain elements that naturally take more time to load.
+If one sets an implicit wait command, then the browser will wait for the same time frame before loading every web element.
+This causes an unnecessary delay in executing the test script.
+Explicit wait is more intelligent, but can only be applied for specified elements. 
+However, it is an improvement on implicit wait since it allows the program to pause for dynamically loaded elements.
+
+conditions
+--------------
+alertIsPresent()
+elementSelectionStateToBe()
+elementToBeClickable()
+elementToBeSelected()
+frameToBeAvaliableAndSwitchToIt()
+invisibilityOfTheElementLocated()
+invisibilityOfElementWithText()
+presenceOfAllElementsLocatedBy()
+presenceOfElementLocated()
+textToBePresentInElement()
+textToBePresentInElementLocated()
+textToBePresentInElementValue()
+titleIs()
+titleContains()0
+visibilityOf()
+visibilityOfAllElements()
+visibilityOfAllElementsLocatedBy()
+visibilityOfElementLocated()
+
+ex:
+
+public class ExplicictWaitDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		WebDriverWait mywait =new WebDriverWait(wd, Duration.ofSeconds(10)); //declaration 
+		wd.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		wd.manage().window().maximize();
+	WebElement input1	=mywait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Username']")));  // use 
+	
+		input1.sendKeys("admin");
+	    //wd.findElement(By.xpath("//input[@placeholder='Username']")).sendKeys("Admin");
+	   wd.close();
+	}
+
+}
+
+FluentWait
+---------------
+
+
+  // Waiting 30 seconds for an element to be present on the page, checking
+   // for its presence once every 5 seconds.
+   Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+       .withTimeout(Duration.ofSeconds(30L))
+       .pollingEvery(Duration.ofSeconds(5L))
+       .ignoring(NoSuchElementException.class);
+
+   WebElement foo = wait.until(new Function<WebDriver, WebElement>() {
+     public WebElement apply(WebDriver driver) {
+       return driver.findElement(By.id("foo"));
+     }
+   });
+
+
+
+locators:
+---------
+locators is used to identify or find the elements in web page 
+
+In Selenium WebDriver, locators are the methods used to identify HTML elements on a web page for interaction, such as clicking a button, entering text in a field, or verifying the presence of an element. 
+Selenium provides several ways to find elements on the page. 
+
+1> id
+driver.findElement(By.id("id name")).sendKeys("value")
+
+2> name
+By.name()
+
+3>className
+By.className()
+
+4>tagName
+By.tagName()
+
+5>link
+ 1>By.linkText("link name")
+ex:
+driver.findElement(By.linkText ("This is a Link")) 
+
+ 2>By.partialLinkText("partial link")
+ex:
+driver.findElement(By.partialLinkText (<"This is">))  
+
+6>cssSelectors:
+
+there are five types 
+1 tag and id
+2 tag and class 
+3 tag and attribute
+4 tag,class and attribute
+5 sub string matches
+
+1> tag and id 
+  
+tag#value of id 
+driver.findElement(By.cssSelector("Tag#Value of id attribute")) 
+ex
+driver.findElement(By.cssSelector("input#fname"))
+2
+2> tag and class
+
+tag.value of class
+------------------
+driver.findElement(By.cssSelector("Tag.Value of Class attribute")) 
+ex
+driver.findElement(By.cssSelector("input.Automation")) 
+
+3>tag and attribute
+-------------------
+driver.findElement(By.cssSelector("Tag[Attribute=value]"))  
+ex
+driver.findElement(By.cssSelector("input[id='fname']"))  
+
+4> tag,class and attribute
+---------------------------
+
+driver.findElement(By.cssSelector("tag.class[attribute=value]")) 
+ex
+driver.findElement(By.cssSelector("input.gsfi[name=q]"))
+
+5>substring matches
+
+1> ^ starts with
+------------------
+driver.findElement(By.cssSelector("Tag[attribute^=prefix of the string]"))
+ex
+driver.findElement(By.cssSelector("input[id^='fna']"))  
+
+2> $ ends with
+----------------
+driver.findElement(By.cssSelector("Tag[attribute$=suffix of the string]"))  
+ex
+driver.findElement(By.cssSelector("input[id$='me']")) 
+
+3>contains()
+-------------
+driver.findElement(By.cssSelector("input[id*='id']"))  
+We can also use 'contains()' in place of * operator
+
+driver.findElement(By.cssSelector("input:contains(variable)"))  
+<font>password</font>
+driver.findElement(By.cssSelector("input:contains('password')"))
+
+6>xpath
+--------
+xpath is address of the web element
+DOM---- Document object modal
+
+chropath and selectorshub is used to generate xpath in chrome browser
+
+
+types of xpath:
+-------------
+absolute xpath -complete/ full address of the element in the web page(complete xpath)
+relative xpath -partial address of the element in the web page(partial xpath)
+
+absolute xpath:
+--------------
+/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[1]/div[1]/input[1]
+ 
+relative xpath:
+---------------
+//tagName[@attribute='value']
+ex:
+//input[@id='email']
+
+using and & or
+--------------
+xpath=//*[@tpye='submit' or @name='btnRest']
+
+using multiple attribute:
+-----------------------
+xpath=//tagname[@attribute='value'][@attribute='value']
+
+using contains method
+----------------------
+xpath=//tagname[contains(@attribute,'value')]
+
+xpath methods:
+----------------
+we handle elements whose properties are dynamically changing
+
+1>contains()
+--------------
+//tagname[contains(@id,'email')]  --->matches  email123 email12 femail
+//tagname[contains(text(),'text present in b/w tags')]
+
+2> starts-with()
+-----------------
+
+//input[starts-with(@name.'submit')] --->matches submit-002 submit-003
+
+
+how do u write the xpath for dynamic web element or attributes ?
+
+by using contains or starts-with
+
+handling dynamic attributes 
+--------------------------------------
+suppose if we have one elements which is changing form  start to  stop then we need to use the
+id=start  and id=stop 
+
+//*[@id=start or @id=stop]
+//*[contains(@id,'st')]
+//*[strats-with(@id,'st')]
+
+Chained Xpath
+-------------------
+suppose if we want to locate the child element which dont have any attribute then we use chained xpath 
+ex:
+//div[@id='logo']/a/img
+
+xpath axes 
+--------------
+ancestor::(grand parent)
+parent::
+child::
+descendant::(grand children)
+preceding-sibling::
+following-sibling::
+
+
+for example 
+-------------------
+<div1> 
+      <input>
+      <div2>
+           <img>
+            <list>
+                   <li>
+                   <ul>
+             </list>
+       </div2>
+</div1>
+
+//img[@attribute]/parent::div
+//div[@attribute]/child::list
+//div1[@attribute]/descendant::ul
+//ul[@attribute]/ancestor::div2
+
+
+XPath (XML Path Language) is a powerful query language used to navigate through elements and attributes in an XML document or HTML structure. 
+Below are different ways to write XPath expressions based on different use cases and scenarios:
+
+1. Selecting Elements by Tag Name
+=============================
+You can select elements based on their tag name. This is the simplest form of XPath.
+
+//div
+Selects all <div> elements in the document.
+
+
+2. Selecting Elements by ID
+=======================
+The @id attribute is a common way to select an element. Since IDs are supposed to be unique, selecting by ID is efficient.
+
+//*[@id='elementId']
+Selects the element with the id attribute value of elementId.
+
+3. Selecting Elements by Class Name
+================================
+You can also select elements by their class name.
+
+//*[@class='className']
+Selects all elements with the class className.
+
+4. Selecting Elements by Attribute
+=============================
+
+You can target elements based on any attribute, not just id or class.
+
+//*[@name='username']
+Selects the element with the name attribute set to username.
+
+//*[@type='submit']
+Selects elements with type='submit'.
+
+5. Using contains() Function
+========================
+The contains() function allows you to match part of an attribute value or text content.
+This is particularly useful when you're not sure of the full attribute value.
+
+Matching part of an attribute value:
+=============================
+//*[contains(@class, 'btn')]
+Selects all elements whose class attribute contains the substring btn.
+
+Matching part of the text content:
+============================
+//*[contains(text(), 'Submit')]
+Selects all elements whose text contains the substring Submit.
+
+6. Selecting Elements by Text
+=========================
+You can directly match elements based on their text content.
+
+//*[text()='Submit']
+Selects all elements whose text content is exactly Submit.
+
+
+Case-insensitive text match:
+==========================
+//*[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'submit']
+This XPath expression matches the text "Submit" in a case-insensitive way by converting the text to lowercase.
+
+7. Using starts-with() Function
+===========================
+The starts-with() function is used to match an attribute that starts with a certain value.
+
+//*[starts-with(@id, 'btn')]
+Selects all elements whose id attribute starts with btn.
+
+8. Using and/or Operators
+=======================
+You can combine multiple conditions using and and or.
+
+Example with and:
+//*[@id='login' and @type='submit']
+Selects the element with both id='login' and type='submit'.
+
+Example with or:
+//*[@id='login' or @class='btn']
+Selects the element with either id='login' or class='btn'.
+
+9. Selecting Child Elements
+=======================
+To select child elements, you can use the / operator.
+
+//div/input
+Selects all <input> elements that are direct children of a <div> element.
+
+10. Selecting Descendants
+=====================
+The // operator selects elements at any level in the document.
+
+//div//input
+Selects all <input> elements that are descendants of a <div> element (not necessarily direct children).
+
+11. Using the * Wildcard
+=====================
+The * wildcard can be used to select any element, regardless of the tag name.
+
+//*[contains(@class, 'input')]
+Selects all elements whose class attribute contains the substring input.
+
+12. Selecting Parent Elements
+==========================
+You can select parent elements using the .. operator.
+
+//input[@id='username']/..
+Selects the parent element of the <input> element with id='username'.
+
+13. Using last() Function
+=====================
+You can select the last element from a set of elements.
+
+(//div[@class='item'])[last()]
+Selects the last <div> element with the class item.
+
+14. Using Indexes
+====================
+XPath supports indexing, starting from 1 (not 0).
+
+(//input[@type='text'])[2]
+Selects the second <input> element with type='text'.
+
+15. Using preceding-sibling and following-sibling
+=========================================
+You can select elements that are siblings of a particular element.
+
+Select the previous sibling:
+//div[@id='login']/preceding-sibling::h2
+Selects the <h2> element that precedes the <div> with id='login'.
+
+Select the next sibling:
+//div[@id='login']/following-sibling::p
+Selects the <p> element that follows the <div> with id='login'.
+
+16. Selecting by Relative Position
+==========================
+You can use a combination of //, /, and indexing to select elements based on their position relative to other elements.
+
+//div[2]//span[1]
+Selects the first <span> element inside the second <div> element.
+
+17. Using normalize-space() Function
+===============================
+The normalize-space() function is used to trim leading and trailing spaces from text nodes and normalize inner spaces.
+
+//*[normalize-space(text())='Submit']
+Selects the element with text content exactly equal to Submit, ignoring leading and trailing spaces.
+
+18. Matching Multiple Values for an Attribute
+========================================
+You can use the | (union) operator to match multiple values for an attribute.
+
+//*[@class='btn' | @class='submit']
+Selects elements where the class attribute is either btn or submit.
+
+19. Using descendant-or-self
+=========================
+This axis allows you to select both the current element and all its descendants.
+
+//div[@id='main']//descendant-or-self::p
+Selects all <p> elements that are descendants of a <div> with id='main', including the <div> itself.
+
+20. Using following and preceding Axes
+==================================
+The following and preceding axes allow you to select elements after or before the context node, including the entire subtree.
+
+Example using following:
+//h2/following::p
+Selects all <p> elements that appear after an <h2> element in the document.
+
+Example using preceding:
+//h2/preceding::p
+Selects all <p> elements that appear before an <h2> element in the document.
+
+21. Using self Axis
+==============
+The self axis selects the current node.
+
+//div[@id='login']/self::div
+Selects the <div> element with id='login' (essentially selecting itself).
+
+22. Using ancestor and descendant Axes
+====================================
+These axes allow you to navigate up or down the DOM tree.
+
+Select ancestor:
+//span[@class='error']/ancestor::div
+Selects the <div> ancestor of a <span> element with class='error'.
+Select descendant:
+//div[@class='container']/descendant::p
+Selects all <p> elements that are descendants of a <div> with class='container'.
+
+
+
+dropdowns
+----------
+DropDown Box
+--------------------
+1) select dropdown 
+2)bootstrap drop down
+3) hidden dropdowns 
+
+select dropdown 
+--------------------------
+By using select class we can handle the drop downs
+ Ex: Select dropdown =new Select(driver.findelement(By.id("idValues")));
+     in select class we have different methods. These are given below
+      1>selectByIndex(int i) --> by index value it will selected 
+      2>selectByValue(value)--> in html we want to give value properties
+      3>selectByVisibleText(text)--->in dropdown we want to give the visible text
+  getOptions gives the list values
+
+switch between frames/iframes:
+------------------------------------------
+driver.switchTo().frame(frame idname) when we have id 
+driver.switchTo().frame(frame name);when we have a name
+driver.switchTo().frame(driver.findElement(By.xpath("xxxx"))); when we dont have name
+driver.switchTo().frame(index) when we have number of frame we are using index
+
+
+ we cant switch one frame to another frame we need to switch default frame 
+driver.switchTo().defaultContent();
+
+1)Switching to a Frame by Index Frames are indexed starting from 0.
+==============================================================
+
+ You can switch to a frame by its index in the document using driver.switchTo().frame(index).
+
+driver.switchTo().frame(0); // Switches to the first frame
+
+2)Switching to a Frame by Name or ID If the frame has a name or id attribute, you can switch to it by using either the name or id attribute value.
+========================================================================================================================
+
+driver.switchTo().frame("frameNameOrId"); // Switches to a frame with the name or id "frameNameOrId"
+
+3)Switching to a Frame by WebElement You can also switch to a frame by passing the WebElement of the frame.
+=============================================================================================
+
+WebElement frameElement = driver.findElement(By.id("frameId"));
+driver.switchTo().frame(frameElement); // Switches to a frame using a WebElement
+
+
+Switching Back to the Main Content After interacting with elements inside a frame, 
+=====================================================================
+
+you may want to switch back to the main document (outside the frame). You can do that using:
+
+driver.switchTo().defaultContent(); // Switches back to the main page
+
+
+Switching to a Parent Frame If you're inside a nested frame, you can switch to the parent frame using:
+====================================================================================
+
+driver.switchTo().parentFrame(); // Switches to the parent frame (if nested)
+
+
+Interview Questions on Frames in Selenium
+Here are some common interview questions related to working with frames in Selenium:
+
+1. What are frames, and how are they used in Selenium?
+Answer: In web development, a frame (or iframe) is an HTML element that allows you to embed one HTML document within another. In Selenium,
+ frames can be handled by switching the WebDriver's context to the frame before interacting with the elements inside it.
+ This is done using the switchTo().frame() method. The frame can be identified by index, name, ID, or WebElement.
+
+2. How do you switch between frames in Selenium?
+Answer: You can switch between frames using several methods:
+By index:
+======== 
+driver.switchTo().frame(0);
+By name or ID: 
+=============
+driver.switchTo().frame("frameName");
+By WebElement: 
+=============
+driver.switchTo().frame(driver.findElement(By.id("frameId")));
+To switch back to the main page: 
+===========================
+driver.switchTo().defaultContent();
+To switch to a parent frame: 
+======================
+driver.switchTo().parentFrame();
+
+
+3. How would you switch to a frame by index?
+Answer: You can switch to a frame by its index by calling switchTo().frame(index), where the index is an integer (starting from 0 for the first frame). 
+ Example:
+driver.switchTo().frame(0); // Switches to the first frame
+
+
+4. What will happen if you try to interact with an element inside a frame without switching to the frame first?
+
+Answer: If you try to interact with an element inside a frame without first switching to the frame,
+ Selenium will not be able to find the element because the WebDriver’s context is not within the frame
+. You'll likely encounter a NoSuchElementException or ElementNotVisibleException.
+
+
+5. How do you handle nested frames?
+Answer: For nested frames, you need to switch from the outer frame to the inner frame using switchTo().frame(). You can switch to a nested frame by:
+Switching to the parent frame first using driver.switchTo().parentFrame();
+Or, directly switch to a nested frame by using its index, name, ID, or WebElement, just like with non-nested frames.
+For example:
+
+driver.switchTo().frame(0); // Switch to the first frame
+driver.switchTo().frame(1); // Now switch to the second frame inside the first one
+
+6. What is the difference between defaultContent() and parentFrame()?
+Answer:
+driver.switchTo().defaultContent(); switches to the main document (the top-level frame).
+driver.switchTo().parentFrame(); switches to the immediate parent frame of the current frame.
+So, if you are inside a deeply nested frame, defaultContent() takes you directly to the main page, whereas parentFrame() only takes you up one level.
+
+7. How can you verify if an element is inside a frame?
+Answer: There is no direct method to verify if an element is inside a frame. However, you can try to locate the element and handle exceptions if the frame context is not set. If you attempt to find an element inside a frame without switching to the frame first, you may get a NoSuchElementException or StaleElementReferenceException.
+
+8. Can we handle frames without using switchTo().frame()?
+Answer: No, you need to switch to a frame first before interacting with its elements in Selenium
+. However, you can use JavaScript or actions like clicking a button that triggers the switching, but those actions would still switch the context internally.
+
+9. How do you handle a situation where the frame ID is dynamic?
+Answer: In such cases, you can use strategies like partial matching of IDs or use XPath or CSS Selectors to identify the frame. For example, if the frame’s ID is dynamic and contains a static part:
+WebElement frame = driver.findElement(By.xpath("//iframe[contains(@id, 'framePrefix')]"));
+driver.switchTo().frame(frame);
+
+
+11. How can we switch between multiple frames with the same name?
+Answer: If you have multiple frames with the same name or id, you should switch by index instead.
+If frames share the same name or id, Selenium will identify them based on the order in the document (first frame is index 0, second frame is index 1, etc.).
+Sample Code to Switch Between Frames:
+Here's a simple example to demonstrate switching between frames:
+
+Conclusion:
+
+Understanding how to switch between frames is crucial for working with web pages that use frames or iframes.
+Be familiar with switchTo().frame(), switchTo().defaultContent(), and switchTo().parentFrame().
+During interviews, be prepared to explain these concepts and provide code examples demonstrating switching between frames.
+If you need more details on any of the topics mentioned, feel free to ask!
+
+switch between alerts/popups:
+----------------------------
+Alert:
+------
+we can't inspect this alerts  these are not webelements 
+alerts types:
+-------------
+1> Normal alert with ok-----driver.switchTo().alert().accept();
+2> Conformation alert with ok or cancel
+3> Prompt alert with input textbox 
+
+Syntax:
+-------
+
+Alert myAlert=	driver.switchTo().alert();
+System.out.println(myAlert.getText());
+	myAlert.accept();
+
+driver.switchTo().alert();
+driver.switchTo().alert().accept()--close the alert by clicking ok button
+driver.switchTo().alert().dismiss()---close the alert box by clicking cancel button
+driver.switchTo().alert().sendKeys(args)---send the text into alert text box
+
+Without Switching commands  and using explicitWait
+-----------------------------------------------------------------------
+WebDriverWait mywait =new WebDriverWait(wd, Duration.ofSeconds(10));
+		wd.findElement(By.xpath("//button[normalize-space()=\"Click for JS Alert\"]")).click();
+		Alert myalert=mywait.until(ExpectedConditions.alertIsPresent());
+		myalert.accept();
+
+getting text
+==========
+Alert alert = driver.switchTo().alert();
+String alertText = alert.getText();
+System.out.println(alertText);
+
+To switch to a prompt alert and send text
+===================================
+ you use the sendKeys() method, followed by accept() to confirm:
+Alert alert = driver.switchTo().alert();
+alert.sendKeys("Enter your name");
+alert.accept();
+
+
+ What will happen if you try to interact with an alert without switching to it in Selenium?
+========================================================================
+Answer: If you try to interact with an alert without switching the WebDriver’s context to the alert,
+ Selenium will not be able to find the alert and will throw a NoAlertPresentException. 
+You need to switch to the alert first using driver.switchTo().alert() before interacting with it.
+
+What is NoAlertPresentException in Selenium?
+======================================
+Answer: NoAlertPresentException is an exception thrown when you attempt to switch to an alert using driver.switchTo().alert()
+ but no alert is present on the page at that moment. 
+This exception indicates that there is no alert available to interact with.
+
+
+AuthnticatePopup
+-------------------------
+.cant handle by switching commands and explicit wait then we need to follow this below method 
+https://the-internet.herokuapp.com/basic_auth
+https://username:password@the-internet.herokuapp.com/basic_auth
+
+https://admin:admin@the-internet.herokuapp.com/basic_auth
+
+3 types of Switching methods 
+---------------------------------------
+1) browser windows
+    driver.switchTo().window("windowId/window handle");
+2)alerts
+    driver.switchTo().alert()
+3) frames
+   driver.switchTo().frame()
+
+
+how to handle web tables
+----------------------------------
+web tables are 3 types
+ 1) static web table  --->  data,rows and columns are not changed
+2) dynamic web table ----->  data,rows are  changed but columns are  not changed
+3) table with pagination  ----- data,rows are  changed but columns are  not changed but stored like in a pages 
+
+
+
+dynamic web table with pagination
+------------------------------------------------
+
+Mouse actions     :  
+-------------------------
+we can perform mouse actions like mouse hover action ,double click ,right click , drag and drop etc 
+in selenium we have Actions class which we can operate this all actions
+
+Mouse hover action : moveToElement(element)
+--------------------------------------------------------------------
+if we use action class variable we should end with build().perform();
+build()     create the action ---- calling 
+perform()   complete the action
+perform method also create the action and complete the action
+
+ac.moveToElement(desktop).moveToElement(mac).click().perform();  its is valid only build action is not mandatory 
+
+
+
+public class MouseHoverElement {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://demo.opencart.com/");
+		wd.manage().window().maximize();
+		WebElement desktop=  wd.findElement(By.xpath("//a[normalize-space(text()),'Desktops']"));
+		WebElement mac=wd.findElement(By.xpath("//a[normalize-space(text()).'Mac-1]"));
+		Actions ac =new Actions(wd);
+		ac.moveToElement(desktop).moveToElement(mac).build().perform();
+		
+	
+	}
+
+}
+Right click action  : contextClick(ele).
+---------------------------------------------------
+right click button we don't get the xpath by using find the dom we can find
+
+
+
+public class RightCickAction {
+public static void main(String[] args) {
+	WebDriver wd=new ChromeDriver();
+	wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+	wd.get("https://swisnl.github.io/jQuery-contextMenu/demo.html");
+	wd.manage().window().maximize();
+	WebElement ele=wd.findElement(By.xpath("//span[@class=\"context-menu-one btn btn-neutral\"]"));
+	Actions ac= new Actions(wd);
+	ac.contextClick(ele).perform();
+	wd.findElement(By.xpath("//span[normalize-space()=\"Paste\"]")).click();
+	Alert ac1=wd.switchTo().alert();
+	ac1.accept();
+	
+}
+}
+double Click: doubleClick(element)
+------------------------------------------------
+public class DoubleClick {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://swisnl.github.io/jQuery-contextMenu/demo.html");
+		wd.manage().window().maximize();
+		ac.doubleClick(ele).perform();
+		WebElement ele=wd.findElement(By.xpath("//span[@class=\"context-menu-one btn btn-neutral\"]"));
+		Actions ac= new Actions(wd);
+	}
+
+}
+
+when we have inner text then only we can use getText method in selenium
+whwn we don't have inner text on that time we can use getAttribute('value')
+
+getText()     and   getAttribute(attribute)
+---------------------------------------------------------------
+
+<input id="xyz" > welcome </input>
+
+getText()   ------- returns inner text ------ welcome 
+getAttribute(id)   ------- returns the value of  attribute of the element  ---- xyz
+
+<input value="welcome"> </input>
+getAttribute(value) ------ welcome 
+
+Drag and Drop :  dragAndDrop(source, desti)
+--------------------------------------------------------------
+public class DranAndDropDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("http://www.dhtmlgoodies.com/scripts/drag-drop-custom/demo-drag-drop-3.html");
+		wd.manage().window().maximize();
+		WebElement source=wd.findElement(By.xpath("//div[@id='box1']"));
+		WebElement desti=wd.findElement(By.xpath("//div[@id='box106']"));
+		Actions ac= new Actions(wd);
+		ac.dragAndDrop(source, desti).perform();
+
+	}
+
+}
+
+
+Actions vs Action
+---------------------------
+Actions -- class      will be used to perform mouse actions 
+Action ---- interface will be used to stored the created actions 
+
+Ex:
+public class ActionVsActions {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://swisnl.github.io/jQuery-contextMenu/demo.html");
+		wd.manage().window().maximize();
+		WebElement ele=wd.findElement(By.xpath("//span[@class=\"context-menu-one btn btn-neutral\"]"));
+		Actions ac= new Actions(wd);
+		Action myaction=ac.contextClick(ele).build();
+		myaction.perform();
+		
+		
+
+	}
+
+}
+
+
+Slider   dragAndDropBy(element, x axis ,y axis )
+--------
+public class HorizontalSlider {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+//https://www.jqueryscript.net/demo/Price-Range-Slider-jQuery-UI/
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://www.jqueryscript.net/demo/Price-Range-Slider-jQuery-UI/");
+		wd.manage().window().maximize();
+		Actions act=new Actions(wd);
+		//min slider
+	WebElement el=wd.findElement(By.xpath("//div[@class=\"price-range-block\"]//span[1]"));
+	   System.out.println(el.getLocation()); 
+	   act.dragAndDropBy(el, 100, 270).perform();
+	   // max slider
+	   WebElement el1=wd.findElement(By.xpath("//div[@class=\"price-range-block\"]//span[2]"));
+	   System.out.println(el1.getLocation()); 
+	   act.dragAndDropBy(el1, -100, 270).perform();
+	   
+	}
+
+}
+
+
+
+Keyboard Actions 
+-----------------------
+like shortcut keys  ctrl+a, ctrl+c , ctrl+v , tab etc
+
+KeyUp()   - releasing the keys
+KeyDown() -- pressing the key
+
+
+ex:
+public class KeyBoardActions {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://text-compare.com/");
+		wd.manage().window().maximize();
+		Actions act=new Actions(wd);
+		wd.findElement(By.xpath("//textarea[@id=\"inputText1\"]")).sendKeys("welcome");
+		//ctrl+a
+		act.keyDown(Keys.CONTROL).sendKeys("A").keyUp(Keys.CONTROL).perform();
+		
+		//ctrl+c
+		act.keyDown(Keys.CONTROL).sendKeys("C").keyUp(Keys.CONTROL).perform();
+		//tab
+		act.keyDown(Keys.TAB).keyUp(Keys.TAB).perform();
+		
+		//ctrl+v
+		act.keyDown(Keys.CONTROL).sendKeys("V").keyUp(Keys.CONTROL).perform();
+		//enter
+		act.keyDown(Keys.ENTER).keyUp(Keys.ENTER).perform();
+		
+	act.keyDown(Keys.CONTROL).keyDown(Keys.SHIFT).sendKeys("A").keyUp(Keys.SHIFT).keyUp(Keys.CONTROL).perform();
+		}
+
+}
+
+if we open some pages we will be in homepage if we click any other element it will open new window but we cant see the home page if we want to open any page in new window
+ we using ctrl+click on element 
+ex:
+
+public class OpenTheLinkInNewTab {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://demo.nopcommerce.com/");
+		wd.manage().window().maximize();
+		Actions act=new Actions(wd);
+		WebElement link=wd.findElement(By.xpath("//a[normalize-space()=\"Register\"]"));
+		act.keyDown(Keys.CONTROL).click(link).keyUp(Keys.CONTROL).perform();
+		List<String> ids=new ArrayList(wd.getWindowHandles());
+		ids.get(1);
+		wd.switchTo().window(ids.get(1));
+		Thread.sleep(3000);
+		wd.switchTo().window(ids.get(0));
+		wd.close();
+	}
+
+}
+if we want to open new Tab and window
+ex 2
+public class TabAndWindow {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://text-compare.com/");
+		wd.manage().window().maximize();
+		wd.switchTo().newWindow(WindowType.TAB);
+		wd.get("https://www.orangehrm.com/");
+		wd.switchTo().newWindow(WindowType.WINDOW);
+		wd.get("https://www.orangehrm.com/");
+		
+	}
+
+}
+
+java Script executor 
+----------------------------
+executeScript()  --- we can execute JavaScript statements 
+
+we can use this method for send keys and clicking and also we can use this for scrolling 
+public class JavaExecutorDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver wd=new ChromeDriver();
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		wd.get("https://testautomationpractice.blogspot.com/");
+		wd.manage().window().maximize();
+		//passing input text 
+		WebElement input= wd.findElement(By.xpath("//input[@id=\"name\"]"));
+		JavascriptExecutor js=(JavascriptExecutor)wd;
+		js.executeScript("arguments[0].setAttribute('value','raju')", input);
+		//clicking the element
+		WebElement male=wd.findElement(By.xpath("//input[@id=\"male\"]"));
+		js.executeScript("arguments[0].click()", male);
+		
+		
+	}
+
+}
+
+
+scrolling example:
+-------------------------
+vertical scroll bar 
+------------------------
+by pixels
+-------------------- 
+js.executeScript("window.scrollBy(0,1500)", "");
+System.out.println(js.executeScript("return window.pageYOffset;"));//
+
+scroll the element up to elemnt visible 
+--------------------------------------------------------
+WebElement ele = wd.findElement(By.xpath("//h2[normalize-space()=\"Web Table\"]"));
+js.executeScript("arguments[0].scrollIntoView();",ele);
+System.out.println(js.executeScript("return window.pageYOffset;"));
+
+
+scroll page till end of the page 
+-----------------------------------------
+js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "")
+System.out.println(js.executeScript("return window.pageYOffset;"));
+
+scroll page at starting position
+--------------------------------------------
+js.executeScript("window.scrollBy(0,-document.body.scrollHeight)", "");
+System.out.println(js.executeScript("return window.pageYOffset;"));
+elementInterceptedException:
+
+
+horizontal direction
+---------------------------
+by pixels
+-------------------- 
+js.executeScript("window.scrollBy(1500,0)", "");
+System.out.println(js.executeScript("return window.pageXOffset;"));//
+
+scroll the element up to elemnt visible 
+--------------------------------------------------------
+WebElement ele = wd.findElement(By.xpath("//h2[normalize-space()=\"Web Table\"]"));
+js.executeScript("arguments[0].scrollIntoView();",ele);
+System.out.println(js.executeScript("return window.pageXOffset;"));
+
+
+scroll page till end of the page 
+-----------------------------------------
+js.executeScript("window.scrollBy(0,document.body.scrollWidth)", "")
+System.out.println(js.executeScript("return window.pageXOffset;"));
+
+scroll page at starting position
+--------------------------------------------
+js.executeScript("window.scrollBy(0,-document.body.scrollWidth)", "");
+System.out.println(js.executeScript("return window.pageXOffset;"));
+elementInterceptedException:
+
+ZoomIn and Zoomout
+-------------------------------
+JavascriptExecutor js=(JavascriptExecutor)wd;
+js.executeScript("document.body.style.zoom='50%'");
+
+upload the files 
+-----------------------
+we can upload files by using sendKeys(location of the path)
+
+
+how to capture screenshots 
+-------------------------------------
+1)full page 
+2)specific are of the page 
+3)web element 
+
+full page 
+------------
+TakesScreenshot ts= (TakesScreenshot)wd;
+File sourceFile=ts.getScreenshotAs(OutputType.FILE);  // once we created a file it will store somewhere we don't know where to store so we declared file to store a particular location
+File targetFile=new File(System.getProperty("user.dir")+"\\ScreenShots\\fullpage.png");
+sourceFile.renameTo(targetFile);
+
+System.getProperty("user.dir")  will give  dynamic location of path :   ---> C:\Users\KGOWDGAR\Desktop\New folder\seleniumwebdriver
+
+another way to get screenshot
+ TakesScreenshot screenshotTaker = (TakesScreenshot) driver;
+            File srcFile = screenshotTaker.getScreenshotAs(OutputType.FILE);
+            File destFile = new File(filePath);
+            FileUtils.copyFile(srcFile, destFile);
+	
+specific area of the page 
+-------------------------------
+WebElement featuredElement=wd.findElement(By.xpath("//div[@class=\"product-grid home-page-product-grid\"]"));
+File sourceFile=featuredElement.getScreenshotAs(OutputType.FILE);
+File targetFile=new File(System.getProperty("user.dir")+"\\ScreenShots\\fullpage1.png");
+sourceFile.renameTo(targetFile);
+
+
+webelement screenshot
+---------------------------------
+WebElement featuredElement=wd.findElement(By.xpath("//img[@alt=\"nopCommerce demo store\"]"));
+File sourceFile=featuredElement.getScreenshotAs(OutputType.FILE);
+File targetFile=new File(System.getProperty("user.dir")+"\\ScreenShots\\fullpage3.png");
+sourceFile.renameTo(targetFile);
+
+HeadLess mode of execution
+--------------------------------------
+chromeOptions
+edgeOptions
+fireFoxOptions
+
+by using this above options we can control the settings of browsers 
+
+1)By Using these options we can achieve headless(without seeing any ui it will run in backend) testing 
+
+ChromeOptions co=new ChromeOptions();
+co.addArguments("--headless=new"); //setting for headless mode of execution
+WebDriver wd=new ChromeDriver(co);
+
+Advantage 
+--------------
+we can do multiple task 
+faster execution 
+
+Disadvantages 
+-------------------
+user cannot see the actions on the page so he cant understand the functionality  of the test 
+
+
+Handling ssl certficates 
+------------------------------
+ChromeOptions ch=new ChromeOptions();
+ch.setAcceptInsecureCerts(true);
+  WebDriver wd=new ChromeDriver(ch);
+
+to remove chrome is being controlled by automated tool
+----------------------------------------------------------------------------
+
+ChromeOptions co=new ChromeOptions();
+co.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"}); 		
+WebDriver wd=new ChromeDriver(co);
+
+
+to run in incognito mode
+---------------------------------
+ChromeOptions co=new ChromeOptions();
+co.addArguments("--incognito");
+
+Test Driven Development 
+---------------------------------
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+            
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data driven test:
+-----------------
+Reading data from excel sheet
+
+download Apache poi package:
+-----------------------------
+download apache poi-bin zip file from binary distrubution
+
+add all the jars to java projecct build path
+we need to add two dependencies apache-poi an apache poi based on poi-ooxml in pom.xml
+
+Excel is a file;
+Excel--->workbooks--->sheets----->rows----->cells
+
+
+FileInputstream class from java io packages ---> open the any type of  file input mode and also reading mode
+FileOutputStream class from java io pacakage--->write the file
+
+openwork book ---->XSSFWorkbook
+for sheet------>XSSFSheet----getSheet("sheetName") getSheetAt(index);
+getLastRowNum();,getLastCellNum();
+
+
+for Row  ------>XSSFRow----getRow()
+for cell----->XSSFCell-----getCell()
+
+getStringCellValue() ---- gets string in excel sheet
+getNumericCellValue()
+based on data types
+
+
+on the time of creating the excel file in java  we used the following methods
+1> createSheet();
+2>createRow();
+3>createCell();
+4>setCellvalue()--used to write the values into the cell
+after all creating the rows and cell we want to 
+workbook.write(file object name)
+file object name.close();
+
+1)reading the data from excel sheet 
+==============================
+l
+
+web table and calender:
+-----------------------
+1> open url ----
+2> Login(Admin/admin)
+3>admin-->user management-->users
+
+calender
+---------
+after selecting year we want to click + symbool month or - decresing
+suppose we want jan 2022 
+first we want to select year by using Select
+and we using for  loop for adding the month
+select the date 
+
+
+Action class:
+-------------
+Mouseover--- when we place any cursor it will display the below options
+mouse right click
+drag and drop
+slider
+Resizable
+-----------
+methods in action class
+------------------------
+clickAndHold()---clicks(without releasing) at the current location
+contextClick()----performs a context click at the current mouse location
+doubleClick()------performs a double click at the current mouse location
+dragAndDrop(Source,target)---performs click and hold at the location of the source elememt
+           moves to the location of the target element then releases the mouse 
+  parameter
+  ----------
+   source:element to emulate button down at
+   target: element to move to and release the mouse at
+dragAndDropBy(Source,x-offset,y-offset)---performs click and hold at the location of the source elememt
+           moves by a given offset then releases the mouse 
+
+   parameter
+  ----------
+   source:element to emulate button down at
+    x-offset horizontal move offset
+    y-offset vertical move offset
+
+moveToElement(toElement)-----moves the mouse to the middle of the elemnt 
+and we want to use to build() and prform() otherwise it will give error
+   parameters
+   ----------
+   toElement-element to move to
+release() ---releases the depressed left mouse button at the current mouse location
+
+if we want to perform mouse over as well as click 
+--------------------------------------------------
+Actions act=new Actions(driver)
+act.moveToElement(target).click().build().perform();
+
+
+
+movetoElement ---->mouseOver
+contextClick() ---->right click
+dragAndDrop()------>drag and drop
+act.clickAndHold(source).moveToElement(target).release().build().perform();
+act.moveToElement(slider).dragAndDropBy(slider, 300, 0).build().perform()  -----> slider
+
+
+Scrolling
+----------
+to scroll using selenium you can use JavaScriptExecutor interface that heips to execute
+JavaScript mthods through selenium webdriver
+
+Syntax
+-------
+JavaScriptExecutor js=(JavaScriptExecutor) driver;
+js.executeScript(Script,arguments);
+
+// scrolling by using pixel
+js.executeScript("window.scrollBy(0,1000)","");
+
+// scrolling page till we find element
+WebElement ele=driver.findElement(By.id())
+js.executeScript(Script,arguments);
+
+
+git and github
+---------------
+it is software
+
+it is a configuration management tools
+git--configuration management tool--local repository(every one store in to their local system)
+github---remote repository(server) -
+github
+-------
+account want to created
+create github repository------>url
+
+https://github.com/Saikumarkn26/seleniumnotes.git(remote repository url)
+
+git -->install
+
+Testng
+-------
+TestNG is a testing framework inspired from JUnit and NUnit, but introducing some new functionalities that make it more powerful and easier to use.
+
+TestNG is an open source automated testing framework; where NG means NextGeneration. 
+TestNG is similar to JUnit (especially JUnit 4), but it is not a JUnit extension. It is inspired by JUnit. 
+
+Installaion 
+--------------
+create maven project and add testng dependency and  selenium dependency in pom.xml file 
+
+
+Batch testing
+-------------
+executing a multiple test cases as a suite is called as batch testing
+only xml file can be used for batch testing
+
+how to cretae xml file in a package:
+------------------------------------
+if we want to excute no of java class by xml
+-------------------------------------------
+right click on package -->click on new ---->click on other ---click on xml --click on xml file 
+--->give name 
+and write
+<suite name="some name">
+   <test name=some name">  
+       <classes>   
+              <class name="entire the path"------/>
+              <class1------/>
+       </classes>
+  </test>
+<suite>
+
+if we want to execute the xml files then we create 
+--------------------------------------------------
+<suite name="some name">
+  <suite-files>
+     <suite-file path="path file of xml 1"/>
+     <suite-file path="path file of xml 2"/>
+     <suite-file path="path file of xml and so on"/>
+  </suite-files>
+</suite>
+
+when the test cases are failed it will produce the reports and in order to create logs and screenshot
+ we want to cretae another class with the help of the testng listeners
+
+Testng Listeners
+----------------
+Listerns are class in testng 
+
+@Test(enabled=false):
+--------------------
+if we dont to want to execute the method we use enabled is false
+
+
+<suite name="some name">
+ <listeners>
+    <listener name="----"/>
+  <listeners>
+   <test name=some name">  
+       <classes>   
+              <class name="entire the path"------/>
+                 <methods>
+                    <include name="---"/> it will excute
+                    <exclude name="----"/>it won't excute
+                 </methods>
+              <class1------/>
+       </classes>
+  </test>
+<suite>
+
+Testng listener classes
+--------------
+TestListenerAdapter is a predefined class
+
+it contains methods:
+--------------------
+onTestStart(parameters) if any method 
+onTestSuccess(parameters)
+onTestFailure(parameters)
+onTestSkipped(parameters)
+
+----------------------------
+Testng reports:
+---------------
+how we can generate for extent reports:
+--------------------------------------
+go to website extentreports.com and download below first two files
+one xml file--extent-config.xml ---  copy to project home directory  in the workspace
+one jar file--extentreports--xx--xx.jar-- add jar file to project build path
+one java programm which we have to write
+
+
+
+TestNG full notes 
+-----------------------
+TestNG is an open source automated testing framework where NG means NextGeneration.
+ TestNG is inspired by JUnit 
+ java based unit testing tool 
+
+advantage 
+------------
+test cases and test suites 
+grouping of test cases 
+prioritize
+parameterization
+parallel testing 
+reports 
+
+
+testNg congiguration
+---------------------------
+install tetsNg plugin form market place 
+then we need to add  either testing library in build path or dependency in pom.xml
+
+annotations 
+---------------
+
+@Test   ----  replace of main method  we are not using main method 
+if we don't any add test annotation it wont execute
+
+TestNg execute test methods based on alphabetical order by default 
+@Test(priority=num) controls the order of execution
+once you provide priority to the test methods then order of methods is not considered
+priority can be random numbers no need to be consecutive numbers
+if u don't provide any priority then default priority is zero
+if the priorities are same then it will chose alphabetical order 
+negatives also allowed for priorities
+
+execute testcase using testing xml file 
+------------------------------------------------
+Testng xml 
+-------------
+What is TestNG XML?
+----------------------------
+TestNG XML (or testng.xml) is a special xm file used to configure and manage the execution of  test cases  in TestNG, a testing framework for Java.
+
+Why Do We Need It?
+-----------------------------
+Organize Tests: The testng.xml file lets you group and organize your tests. You can define which tests to run, in what order, and how they should be executed.
+
+Run Specific Tests: Instead of running all tests, you can choose which tests or groups of tests to run. For example, 
+you can run only smoke tests (important, quick tests) or only certain types of tests like login or registration.
+
+Run Tests with Parameters: You can pass parameters (like which browser to use for testing) into your test methods.
+This is useful if you want to run the same test on different browsers, for example.
+
+Parallel Testing: You can set tests to run at the same time (in parallel), which can make your tests run faster, especially when you have many tests.
+
+Control Test Execution: You can control things like the order of tests, which tests should run first, and how they depend on each other.
+
+
+test xml file  creation
+---------------------------
+need to create this file under resources folder
+
+generate automatically    right click on any class or package --> clicked on tetsng in project and clicked on convert testng then xml will created automatically 
+manually  click on new --> click on file ---->create xml file   ----> added suite with suite name   ----add test ---add classes --- add class with path of class
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="mysuite">
+<test name="test">
+<classes>
+<class name="TestNg.FirstTesCase"></class>
+<class name="TestNg.OrangeHRM"></class>
+</classes>
+</test>
+</suite>
+
+
+test suite ---- test cases ------test steps 
+xml file ------ classes -----test methods 
+
+example
+------------
+class
+-------
+import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+
+public class TestNGSimpleTest {
+   @Test
+   public void testAdd() {
+      String str = "TestNG is working fine";
+      AssertEquals("TestNG is working fine", str);
+   }
+}
+
+xml file 
+---------
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name = "Suite1">
+   <test name = "test1">
+      <classes>
+         <class name = "TestNGSimpleTest"/>
+      </classes>
+   </test>
+</suite>
+
+assertions
+------------
+Asserts helps us to verify the conditions of the test and decide whether test has failed or passed . 
+a test is considered successful only if it is completed with out throwing any exception.
+
+two types of assertions ;
+--------------------------------
+hard assertion: if any assertion is failed it will stop there it will not go furthur
+soft assertion:  if any assertion is failed it will not stop there it will  go furthur
+
+Hard assertions:
+----------------
+Assert.assertTrue():if condition is true it will passed 
+Assert.assertFalse():if condition is false then it will pass
+Assert.assertEquals():if two conditions is equal it will pass
+
+Soft Assertions:
+----------------
+in order to use the soft assertions we need to create the softassert class object
+SoftAssert as=new SoftAssert();
+as.assertTrue(condition);
+as.assertAll();
+
+Assertions 
+--------------
+Similarly, in Selenium, if we want to automate a test case and validate the output, we should use assert and verify whether the result is pass/fail/skip
+If we just keep writing the automation test cases and do not assert it properly, automation is of no use. 
+Basically, the process of comparing the actual and expected result is called “Assert” in testing terminology
+
+Hard Assert
+------------------
+In hard assert, the program execution stops as soon as an exception occurs and thereby skipping all the next steps in the test method. 
+It throws an Assertion error and marks the test case as failed though all the steps in the test method were not executed. 
+After the assert fails, the current test is skipped and the next @Test is executed.
+we can use from Asset class 
+methods are static 
+if hard assertions are failed then rest of  the statements do not execute  
+
+ Assert.assertEquals("xyz", "XYZ");   -----> compares string and numbers 
+Assert.assertNotEquals("xyz","1xyz");
+Assert.assertTrue(true);
+Assert.assertFalse(true);
+
+Hard assert can be used in login scenarios, where we would like the execution to stop if the login credentials are not valid.
+
+Soft Assert
+----------------
+In some cases, we need the test execution to continue even when there is any exception encountered.
+ Soft Asserts do not throw an Assertion error if there is any exception and rather record the failure. 
+Later, it collects all the assertions throughout the @Test method and throws all the exceptions caught during the process with the assertAll() method.
+
+Soft assert can be used to verify multiple page elements of any landing page, 
+where we would like all the steps to be executed and to throw an error only at the last line of the @Test method. 
+
+we can access through SoftAssert object
+
+SoftAssert sa=new SoftAssert();
+sa.assertTrue(1,1,);
+if soft assertions are failed then rest of  the statements do execute  
+
+
+annotations  
+---------------
+it is a form of metadata that can be added to the java source code
+it is decided when need to execution
+package, class, variables ,methods,parameters
+
+
+@Test(priority=num)   it is used in  methods then it is called test methods 
+
+@BeforeMethod     This will be executed before every @test annotated method. 
+@AfterMethod      This will be executed after every @test annotated method.
+
+@BeforeClass   This will be executed before first @Test method execution. It will be executed one only time throughout the test case.
+@AfterClass      This will be executed after all test methods in the current class have been run its not manaditory
+
+@BeforeTest    This will be executed before the first @Test annotated method. It can be executed multiple times before the test case.
+@AfterTest       A method with this annotation will be executed when all @Test annotated methods complete the execution of those classes inside the <test> tag in the TestNG.xml file.
+
+@BeforeSuite     It will run only once, before all tests in the suite are executed.
+@AfterSuite        A method with this annotation will run once after the execution of all tests in the suite is complete.
+
+@BeforeGroup  it will execute before all groups 
+@AfterGroup     it will execute before all groups 
+
+
+@DataProvider
+@Factory
+@Parameters
+@Ignore
+@Listeners
+
+
+the order of execution annotations 
+==============================
+@BeforeSuite 
+@BeforeGroup 
+@BeforeTest
+@BeforeClass
+@BeforeMethod 
+@Test
+@AfterMethod  
+@AfterClass
+@AfterTest 
+@AfterGroup
+@AfterSuite  
+
+
+
+
+
+
+
+
+
+
+TC1
+------
+1) login  ---   @BeforeMethod login is prerequisite (need to login multiple times)
+2 search   ----- @Test
+3 logout  -------@AfterMethod
+4 login     -----   @BeforeMethod
+5 advance search  ----- @Test
+6 logout  ----------- @AfterMethod
+
+TC2
+-------
+1) login  ---   @BeforeClass  one time
+2 search   ----- @Test
+3Adv search --- @test 
+3 logout   ---- @AfterClass
+
+
+<suite nam=xyz">
+  <test name="test">
+   <classes>
+          <class name="xyz"/>
+    </classes >
+  </test>
+</suite>
+
+
+
+enable attribute 
+-----------------------
+Sometimes, it happens that our code is not ready and the test case written to test that method/code fails. 
+
+In such cases, annotation @Test(enabled = false) helps to disable this test case.
+
+If a test method is annotated with @Test(enabled = false), then the test case is not execute
+ex
+Create a java class to be tested, say, MessageUtil.java in /work/testng/src.
+
+
+public class MessageUtil {
+
+   private String message;
+
+   
+   public MessageUtil(String message) {
+      this.message = message;
+   }
+
+   // prints the message
+   public String printMessage() {
+      System.out.println(message);
+      return message;
+   }
+
+   // add "Hi!" to the message
+   public String salutationMessage() {
+      message = "Hi!" + message;
+      System.out.println(message);
+      return message;
+   }
+}
+
+Create Test Case Class
+--------------------------------
+Create a java test class, say, IgnoreTest.java in /work/testng/src.
+
+Add test methods, testPrintMessage(), and, testSalutationMessage(), to your test class.
+
+Add an Annotation @Test(enabled = false) to the method testPrintMessage().
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class IgnoreTest {
+   String message = "Manisha";
+   MessageUtil messageUtil = new MessageUtil(message);
+
+   @Test(enabled = false)
+   public void testPrintMessage() {
+      System.out.println("Inside testPrintMessage()");
+      message = "Manisha";
+      Assert.assertEquals(message, messageUtil.printMessage());
+   }
+
+   @Test
+   public void testSalutationMessage() {
+      System.out.println("Inside testSalutationMessage()");
+      message = "Hi!" + "Manisha";
+      Assert.assertEquals(message, messageUtil.salutationMessage());
+   }
+}
+
+
+Create testng.xml in /work/testng/src to execute test case(s).
+
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name = "Suite1">
+   <test name = "test1">
+      <classes>
+         <class name = "IgnoreTest" />
+      </classes>
+   </test>
+</suite>
+
+it will execute only one method 
+if we want disable first test case then we have a enabled property need to mention in false mode 
+
+<suite name = "Suite1">
+   <test name = "test1" enabled="false">
+      <classes>
+         <class name = "IgnoreTest" />
+      </classes>
+   </test>
+ <test name = "test2">
+      <classes>
+         <class name = "IgnoreTest" />
+      </classes>
+   </test>
+
+</suite>
+
+
+
+parameters
+-----------------
+@Parameters("name")
+In TestNG, parameters allow you to pass values into your test methods from the testng.xml configuration file. 
+This helps in data-driven testing, where you can run the same test with different inputs without changing the test code.
+we can declare parameter at the suite level and test level 
+
+
+@Parameters("broswerName")
+
+<parameter name="broswerName" value="Chrome"/>
+
+In annotation and xml the name should be same 
+
+suppose if we have more than one we need to mention in array format 
+
+@Parameters({"username","password"})
+
+highest ranking is for test level rather than suite level 
+
+
+Why Use Parameters?
+
+Reuse Test Code: Instead of writing multiple test methods for different inputs, you can pass the inputs as parameters to the same method.
+Data-Driven Testing: Run tests with different values to verify how your code behaves with various inputs.
+Simplify Test Configuration: You can specify test settings (like environment variables, browser types, etc.) directly in the testng.xml.
+
+ex:
+<suite name="TestSuite">
+     <parameter name="browser" value="chrome"/>     --------------- suite level --- the data is available entire suite 
+    <test name="TestWithParameters">
+        <parameter name="browser" value="chrome"/>   ------------- test level  --- the data is available at the test level 
+        <parameter name="environment" value="staging"/>
+        <classes>
+            <class name="com.example.tests.LoginTest"/>
+        </classes>
+    </test>
+</suite>
+
+Optional parameters
+----------------------------
+public void Inialisebroswer(@Optional("Chrome") String str) {
+		switch (str) {
+		case "Chrome":
+			wd=new ChromeDriver();
+			break;
+		case "Edge":
+			wd=new EdgeDriver();
+			break;
+		case "Firefox":
+			wd=new FirefoxDriver();
+			break;
+		default:
+			System.out.println("please provibe correct broswer name");
+		}
+}
+
+
+prioritize 
+========
+
+
+flight booking test
+------------------------
+signup 
+login 
+search for the flight
+book the flight
+save the ticket 
+logout
+
+TestNg execute test methods based on alphabetical order by default 
+@Test(priority=num) controls the order of execution
+once you provide priority to the test methods then order of methods is not considered
+priority can be random numbers no need to be consecutive numbers
+if u don't provide any priority then default priority is zero
+if the priorities are same then it will chose alphabetical order 
+negatives also allowed for priorities
+
+how to ignore test cases in testing
+--------------------------------------------
+
+how to ignore test methods in testing class?
+
+1>@Test(enabled=false)
+	public void test1() {
+		System.out.println("new test2---- test1");
+	}
+2>@Ignore
+	@Test
+	public void test3() {
+		System.out.println("new test2---- test3");
+	}
+
+these both will work 
+if we mention both annotations   it will take ignore 
+
+how to ignore all the test methods the testing class?
+--------------------------------------------
+
+package com.sai.demoTest;
+
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Test;
+@Ignore
+public class NrewTest2 {
+	@Test
+	public void test2() {
+		System.out.println("new test2---- test2");
+	}
+}
+
+we mention ignore  at the top of the class then it will ignore
+
+How to ignore the package 
+----------------------------------
+create the another pacakage-info.java and mention below commands 
+
+@Ignore
+package com.sai.demoTest;
+
+import org.testng.annotations.Ignore;
+
+how to ignore the test in xml file 
+-----------------------------------------
+In test  we need to mention enabled=false 
+
+<test name="ignore test case" enabled=false>	
+---------------
+----------------
+</test>
+
+
+
+
+
+
+
+Groups
+======
+Group test is a new innovative feature in TestNG, which doesn’t exist in JUnit framework. 
+
+groups tag is a attribute which we mention in test annotation in testng
+@Test(groups={"smoke"})
+Groups are specified in your testng.xml file using the <groups> tag. 
+It can be found either under the <test> or <suite> tag
+Groups specified in the <suite> tag apply to all the <test> tags underneath.
+
+suppose we have 
+smoke  --10
+functional --90
+regression --95
+daily build -- 40
+weekly build-100
+
+for this we will create the different xml -- one approach 
+
+if u want categorized multiple test cases into a one group  --second approach 
+
+ex:
+
+package com.sai.demoTest2;
+
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Test;
+
+public class NrewTest2 {
+	@Test(groups= {"smoke"})
+	public void test1() {
+		System.out.println("new test2---- test1 -- smoke");
+	}
+	@Test(groups= {"smoke","functional"})
+	public void test2() {
+		System.out.println("new test2---- test2  --smoke,functional");
+	}
+
+	@Test(groups= {"fuctional"})
+	public void test3() {
+		System.out.println("new test2---- test3 -- functional");
+	}
+	@Test(groups= {"regression"})
+	public void test4() {
+		System.out.println("new test2---- test4 --- regression");
+	}
+
+
+}
+
+xml
+-----
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="demotestClasses">
+	<groups>
+		<run>
+			<include name="smoke" />
+			<include name="regression" />
+			<include name="sanity" />
+			<exclude name="functional" />
+		</run>
+	</groups>
+	<test name="demoTestClasses">
+		<classes>
+			<class name="com.sai.demoTest2.NrewTest" />
+			<class name="com.sai.demoTest2.NrewTest2" />
+		</classes>
+	</test>
+</suite>
+
+groups to groups 
+---------------------
+here we should mention group tags in test and need to mention define tag in groups tag after that we need to include groups then we need to add run tag in groups tag and then add include tag 
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="demotestClasses1">
+	<test name="demoTestClasses">
+	<groups>
+		<define name="weekly">
+			<include name="smoke" />
+			<include name="regression" />
+			<include name="sanity" />
+		</define>
+		<define name="daily">
+			<include name="functional" />
+		</define>
+
+		<run>
+			<include name="weekly" />
+		</run>
+
+	</groups>
+		<classes>
+			<class name="com.sai.demoTest2.NrewTest" />
+			<class name="com.sai.demoTest2.NrewTest2" />
+		</classes>
+	</test>
+</suite>
+
+
+partial groups
+===========
+if we assign the group at class level then we will execute all test methods in that class 
+@Test(groups= {"smoke"})
+public class PartialGroups{
+
+}
+
+test level groups
+---------------------
+if we define the groups in test then it is called test level 
+we have more control 
+it will applicable for that test only 
+
+suite level groups
+-----------------------
+ if we define the groups in suite is called suite level
+it will applicable for all test cases in a suite level 
+
+
+
+
+Now, let's take an example to see how group test works.
+
+Create a Class
+Create a java class to be tested, say, MessageUtil.java in /work/testng/src.
+
+public class MessageUtil {
+   private String message;
+
+   public MessageUtil(String message) {
+      this.message = message;
+   }
+
+   // prints the message
+   public String printMessage() {
+      System.out.println(message);
+      return message;
+   }
+
+   // add "tutorialspoint" to the message
+   public String salutationMessage() {
+      message = "tutorialspoint" + message;
+      System.out.println(message);
+      return message;
+   }
+
+   // add "www." to the message
+   public String exitMessage() {
+      message = "www." + message;
+      System.out.println(message);
+      return message;
+   }
+}
+
+
+Create a java test class, say, GroupTestExample.java in /work/testng/src.
+
+Add test methods, testPrintMessage() and testSalutationMessage(), to your test class.
+
+Group the test method in two categories −
+
+Check-in tests (checkintest) − These tests should be run before you submit new code. They should typically be fast and just make sure no basic functionality is broken.
+
+Functional tests (functest) − These tests should cover all the functionalities of your software and be run at least once a day, although ideally you would want to run them continuously.
+
+Following are the contents of GroupTestExample.java.
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class GroupTestExample {
+   String message = ".com";
+   MessageUtil messageUtil = new MessageUtil(message);
+
+   @Test(groups = { "functest", "checkintest" })
+
+   public void testPrintMessage() {
+      System.out.println("Inside testPrintMessage()");
+      message = ".com";
+      Assert.assertEquals(message, messageUtil.printMessage());
+   }
+
+   @Test(groups = { "checkintest" })
+
+   public void testSalutationMessage() {
+      System.out.println("Inside testSalutationMessage()");
+      message = "tutorialspoint" + ".com";
+      Assert.assertEquals(message, messageUtil.salutationMessage());
+   }
+
+   @Test(groups = { "functest" })
+
+   public void testingExitMessage() {
+      System.out.println("Inside testExitMessage()");
+      message = "www." + "tutorialspoint"+".com";
+      Assert.assertEquals(message, messageUtil.exitMessage());
+   }
+}
+Explore our latest online courses and learn new skills at your own pace. Enroll and become a certified expert to boost your career.
+
+Create testng.xml
+Create testng.xml in /work/testng/src, to execute test case(s). Here, we would be executing only those tests, that belong to the group functest.
+
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name = "Suite1">
+   <test name = "test1">
+
+      <groups>
+         <run>
+            <include name = "functest" />
+         </run>
+      </groups>
+
+      <classes>
+         <class name = "GroupTestExample" />
+      </classes>
+
+   </test>
+</suite>
+Compile the MessageUtil, Test case classes using javac.
+
+/work/testng/src$ javac MessageUtil.java GroupTestExample.java
+Now, run the testng.xml, which will run only the method testPrintMessage(), as it belongs to the group functest.
+
+/work/testng/src$ java org.testng.TestNG testng.xml
+Verify the output. Only the method testPrintMessage() is executed.
+
+Inside testPrintMessage()
+.com
+Inside testExitMessage()
+www..com
+
+===============================================
+Suite1
+Total tests run: 2, Failures: 1, Skips: 0
+===============================================
+
+Group of Groups    (define )
+===============
+Groups can also include other groups. 
+These groups are called MetaGroups. 
+For example, you might want to define a group all that includes checkintest and functest. Let's modify our testng.xml file as follows −
+
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name = "Suite1">
+   <test name = "test1">
+
+      <groups>
+
+         <define name = "all">
+            <include name = "functest"/>
+            <include name = "checkintest"/>
+         </define>
+
+         <run>
+            <include name = "all"/>
+         </run>
+
+      </groups>
+
+      <classes>
+         <class name = "GroupTestExample" />
+      </classes>
+
+   </test>
+</suite>
+Executing the above testng.xml will execute all the three tests and will give you the following result −
+
+Inside testPrintMessage()
+.com
+Inside testSalutationMessage()
+tutorialspoint.com
+Inside testExitMessage()
+www.tutorialspoint.com
+
+===============================================
+Suite1
+Total tests run: 3, Failures: 0, Skips: 0
+===============================================
+
+
+Exclusion Groups
+==============
+You can ignore a group by using the <exclude> tag as shown below −
+
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name = "Suite1">
+   <test name = "test1">
+
+      <groups>
+         <define name = "all">
+            <exclude name = "functest"/>
+            <include name = "checkintest"/>
+         </define>
+
+         <run>
+            <include name = "all"/>
+         </run>
+      </groups>
+
+      <classes>
+         <class name = "GroupTestExample" />
+      </classes>
+
+   </test>
+</suite>
+
+2 things achieved through xml 
+---------------------------------------
+executed group of test cases as a one suite 
+we can generate testng reports 
+
+DataProvider
+===========
+
+Dataprovider is kind of container which can pass data sets to test methods so that test methods will use different set of data 
+
+why?
+to achieve parameterization 
+
+
+here we create another method for passing data with return type double array object  and give name of Data provider in test method which need to execute multiple test data 
+
+@DataProvider(name="testingData")
+public Object[][] loginData() {
+	Object[][] data=new Object[2][2];
+	data[0][0]="Admin";
+	data[0][1]="admin123";
+	data[1][0]="Admin";
+	data[1][1]="test123";
+	 return data;
+	
+}
+
+
+@Test(dataProvider = "testingData")
+public void dataprovider(String str1,String str2) throws InterruptedException {
+	WebDriver wd=new ChromeDriver();
+	wd.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+	wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
+	wd.manage().window().maximize();
+	wd.findElement(By.name("username")).sendKeys(str1);
+	wd.findElement(By.name("password")).sendKeys(str2);
+	wd.findElement(By.xpath("//button[@type='submit']")).click();
+	Thread.sleep(1000);
+	wd.close();
+}
+
+suppose if we dont mention the data provider name we need to give testdata method name into test annotaion 
+
+ex:
+@DataProvider()
+public Object[][] loginData() {
+	Object[][] data=new Object[2][2];
+	data[0][0]="Admin";
+	data[0][1]="admin123";
+	data[1][0]="Admin";
+	data[1][1]="test123";
+	 return data;
+	
+}
+
+@Test(dataProvider = "loginData")
+-----------------------------------------
+----------------------------------------
+----------------------------------------
+
+Explanation 
+---------------
+In TestNG, a DataProvider is a feature that allows you to pass multiple sets of data to a single test method. 
+This helps you run the same test with different inputs, making it very useful for data-driven testing.
+Instead of writing the same test multiple times for different inputs, you can use a DataProvider to provide multiple test data in a single test method.
+
+
+Basic Example of DataProvider
+==========================
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class DataProviderExample {
+
+    // Define a DataProvider method
+    @DataProvider(name = "testData")
+    public Object[][] createData() {
+        return new Object[][] {
+            { "John", 25 },
+            { "Alice", 30 },
+            { "Bob", 35 }
+        };
+    }
+
+    // Test method using the DataProvider
+    @Test(dataProvider = "testData")
+    public void testMethod(String name, int age) {
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+}
+
+Explanation:
+@DataProvider Annotation:
+=======================
+The @DataProvider annotation is used to mark a method that provides the data.
+The name attribute of @DataProvider is used to give it a name (e.g., "testData").
+
+Object[][] Return Type:
+===================
+The createData() method returns a 2D array (Object[][]), where each row represents a set of parameters (data) for the test method.
+For example, the row { "John", 25 } provides the name and age values for a single execution of the testMethod().
+
+Test Method:
+===========
+The test method uses the @Test annotation with the dataProvider attribute, which tells TestNG to use the testData DataProvider for providing data.
+The method parameters (String name, int age) are automatically matched to the data provided by the DataProvider.
+
+is it mandaotry to return Object[][] from the data providers?
+===================================================
+It is not mandatory 
+Data providers has many return types which are shown below 
+
+--Object[] (single dimensional array)
+--Object[][] (mult dimensional array)
+--Iterator<Object>
+--Iterator<Object[]>
+
+Object  -- any data type(pre defined /user defined )
+String 
+Integer
+Float
+Employee[]
+
+Object is the super class for all above class  so instead of all this class we can declare the object 
+
+ if we want to store the combination of data(String ,Integer) then we need to represent in the object s
+thats y we are using --Object[] (single dimensional array) because it is super class of all classes it will accept
+--Object[] (single dimensional array)
+===============================
+@DataProvider(name="OneDimensionIntegerObject")
+public Object[] loginData2() {
+	Object[] data =new Object[] {
+		1,2,"raju",89.0	
+	};
+	return data;
+	
+}
+
+if the object[][] is a jaged array then we need to mention single deimensional array as a parameter in a test method 
+
+--Object[][] (mult dimensional array)
+==============================
+@DataProvider(name="testingData")
+public Object[][] loginData() {
+	Object[][] data=new Object[2][2];
+	data[0][0]="Admin";
+	data[0][1]="admin123";
+	data[1][0]="Admin";
+	data[1][1]="test123";
+	 return data;
+	
+}
+
+--Iterator<Object>
+===============
+@DataProvider(name="IteratorObject")
+public java.util.Iterator<Object> loginData3() {
+	List<Object> li=new ArrayList<Object>();
+	li.add("saikumar");
+	li.add(123);
+	li.add(567);
+	return li.iterator();
+	
+}
+
+--Iterator<Object[]>
+=================
+
+@DataProvider(name="IteratorObjectArray")
+public java.util.Iterator<Object[]> loginData4() {
+	List<Object[]> li=new ArrayList<Object[]>();
+	li.add(new Object[] {"raju",123});
+	li.add(new Object[] {"raju1",121});
+	li.add(new Object[] {"raju3",122});
+	return li.iterator();
+	
+}
+
+
+example
+-----------
+
+package com.sai.test;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.*;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class Dataproviderdemo {
+	
+@Test(dataProvider = "OneDimensionObject")
+public void dataprovider(Object str1) throws InterruptedException {
+	System.out.println(str1);
+}
+@Test(dataProvider = "OneDimensionIntegerObject")
+public void dataproviderInteger(Integer str1) throws InterruptedException {
+	System.out.println(str1);
+}
+@Test(dataProvider = "IteratorObject")
+public void dataproviderIterator(Object str1) throws InterruptedException {
+	System.out.println(str1);
+}
+@Test(dataProvider = "IteratorObjectArray")
+public void dataproviderIteratorObject(Object str1,Object str2) throws InterruptedException {
+	System.out.println(str1+""+str2);
+}
+@DataProvider(name="OneDimensionStringObject")
+public String[] loginData() {
+	String[] data =new String[] {
+		"abcd","xyz","xse"	
+	};
+	return data;
+	
+}
+@DataProvider(name="OneDimensionIntegerObject")
+public Integer[] loginData1() {
+	Integer[] data =new Integer[] {
+		1,2,3	
+	};
+	return data;
+	
+}
+
+@DataProvider(name="OneDimensionObject")
+public Object[] loginData2() {
+	Object[] data =new Object[] {
+		1,2,"raju",89.0	
+	};
+	return data;
+	
+}
+@DataProvider(name="IteratorObject")
+public java.util.Iterator<Object> loginData3() {
+	List<Object> li=new ArrayList<Object>();
+	li.add("saikumar");
+	li.add(123);
+	li.add(567);
+	return li.iterator();
+	
+}
+
+@DataProvider(name="IteratorObjectArray")
+public java.util.Iterator<Object[]> loginData4() {
+	List<Object[]> li=new ArrayList<Object[]>();
+	li.add(new Object[] {"raju",123});
+	li.add(new Object[] {"raju1",121});
+	li.add(new Object[] {"raju3",122});
+	return li.iterator();
+	
+  }
+
+}
+
+What are the return types of data provider?
+======================================
+
+only arrray type and itterator are the return types of data provider 
+
+
+how to use the data provider partially in testng
+=======================================
+
+DP--  sets of data----->TM
+
+if we use few sets of data from dataprovider is called partially data provider
+
+using indices concepts we can send the partial data  
+indices are nothing but indexs
+
+use
+-----
+@DataProvider(indices = {0,2},name="partialDataprovider")
+
+ex:
+package com.sai.test;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import net.bytebuddy.asm.Advice.OffsetMapping.ForOrigin.Renderer.ForReturnTypeName;
+
+public class ParitallyDataProvider {
+	@Test(dataProvider ="partialDataprovider")
+	public void testData(String str) {
+		System.out.println(str);
+	}
+	@DataProvider(indices = {0,2},name="partialDataprovider")
+	public Object[] dataProvider() {
+		Object[] data=new Object[] {
+			"saikumar","raju","rani"	
+		};
+		return data;
+	}
+
+}
+
+
+output:
+======
+saikumar
+rani
+
+how to create the separate class for dataprovider
+=========================================
+
+we can create 
+we can sepearte the data provider in another class 
+we should mention the "dataProviderClass = DataprovidedSeperateClass.class" in testmethods 
+
+package com.sai.test;
+
+import org.testng.annotations.Test;
+
+public class SeperateClassDataProvider {
+  
+
+@Test(dataProviderClass = DataprovidedSeperateClass.class, dataProvider = "seperateClass")
+	public void seperateClassData(String str) {
+		System.out.println(str);
+	}
+}
+
+ 
+parallel execution with data provider in testng
+=======================================
+
+suppoase we have 100 set test data it will execute in sequential order 
+it will take time so insted of if we excute the one test data in one browser and another test data in other broswer parallely 
+
+how to executed paralley
+=====================
+we should mention parallel attribute is true in a data provider method 
+@DataProvider(name="testingData",parallel = true)
+
+
+
+
+ex:
+package com.sai.test;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class Dataproviderdemo2 {
+	
+@Test(dataProvider = "testingData")
+public void dataprovider(String str1,String str2) throws InterruptedException {
+	WebDriver wd=new ChromeDriver();
+	wd.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+	wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
+	wd.manage().window().maximize();
+	wd.findElement(By.name("username")).sendKeys(str1);
+	wd.findElement(By.name("password")).sendKeys(str2);
+	wd.findElement(By.xpath("//button[@type='submit']")).click();
+	Thread.sleep(1000);
+	wd.close();
+}
+@DataProvider(name="testingData",parallel = true)
+public Object[][] loginData() {
+	Object[][] data=new Object[2][2];
+	data[0][0]="Admin";
+	data[0][1]="admin123";
+	data[1][0]="Admin";
+	data[1][1]="test123";
+	 return data;
+	
+}
+
+}
+
+
+
+if we open 100 broswer it will reduce the performance  and network so we need to control the thread count for that mechanism is called data provider  thread count 
+that we cannot add into data provider annotaion we should add into xml file
+
+data-provider-thread-count="2" ---- it will take 2 sets at one time with two btoswer 
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite" data-provider-thread-count="2">
+  <test  name="Test" >
+    <classes>
+      <class name="com.sai.test.Dataproviderdemo2"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
+
+
+
+timeout and expected exceptions
+============================
+A timeout in TestNG allows you to specify a maximum time that a test method is allowed to run.
+If the test exceeds this time limit, it will be automatically aborted and marked as failed.
+
+How to Use Timeout in TestNG:
+=========================
+You can set a timeout for a test method using the @Test annotation with the timeOut attribute.
+
+Syntax Example:
+
+import org.testng.annotations.Test;
+
+public class TimeoutExample {
+
+    // Test with timeout of 2000 milliseconds (2 seconds)
+    @Test(timeOut = 2000)
+    public void testMethod() throws InterruptedException {
+        // Simulating a task that takes time
+        Thread.sleep(1500);  // Will pass as the test is within the 2-second limit
+    }
+
+    @Test(timeOut = 1000)
+    public void testMethodWithTimeout() throws InterruptedException {
+        // Simulating a task that takes time
+        Thread.sleep(1500);  // Will fail as the test exceeds the 1-second limit
+    }
+}
+
+Explanation:
+==========
+timeOut Attribute: 
+In the @Test annotation, timeOut is used to specify the maximum time (in milliseconds) the test can run.
+
+Test Method Execution:
+The first test (testMethod()) sleeps for 1.5 seconds, which is within the 2-second timeout, so it will pass.
+
+The second test (testMethodWithTimeout()) sleeps for 1.5 seconds, but the timeout is set to 1 second, so the test will fail with a timeout exception.
+
+Timeouts and Exceptions:
+If the test takes longer than the specified time (in the timeOut parameter), the test is aborted, and TestNG marks it as failed with a TimeoutException.
+
+
+
+
+
+
+
+
+
+
+
+
+
+BDD(Behavioural driven Development)
+---------------------------------------------------
+in order to understand both techincal and non techincal members another frame work came is knows BDD
+(Behavioural driven development)
+in order achive BDD we need tools such as CuCumber,Specflow,Gradle etc
+acceptence testing
+it is also achieve by TestNg
+it is understand to everyone
+
+Cucumber introduction:
+------------------------------
+it is a open source tool we can implement test case 
+bdd can by achived by Cucumber 
+
+step 1:
+-------
+setup intellij ide on windows---https://youtu.be/8LF2_oIGiJ4
+intellij cucumber plugin
+step 2:
+-------
+create maven project   
+click on file ----> click on maven project --> give name and java path add architected type 
+pom.xml  -- ( add all required dependencies )
+step 3:
+--------
+update pom.xml with all required cucmber and selenium dependencies
+ go to mvnrepository
+ cucumber-core--io.cucumber-latest version
+
+cucumber-core
+cucumber-html
+cobertura
+cucumber-java
+cucumber-junit
+cucumber-jvm-deps
+cucumber-reporting
+hamcrest-core
+gherkin
+selenium-java 
+junit 
+
+
+step 4
+-------
+intellij cucumber plugin  -select project -go to file -click on settings
+--click on plugins -- search for cucumber-java  -install
+
+step 5
+------
+we need to add junit and Hamcrest libraries to your project from intelij installation location(lib)
+
+gherkin----> Launguage which contains certain number of 
+
+project setup in eclipse 
+--------------------------------
+--------------------------------
+step 2:
+-------
+create maven project   
+click on file ----> click on maven project --> give name and java path add architected type 
+pom.xml  -- ( add all required dependencies )
+step 3:
+--------
+update pom.xml with all required cucmber and selenium dependencies
+ go to mvnrepository
+ cucumber-core--io.cucumber-latest version
+
+cucumber-core
+cucumber-html
+cobertura
+cucumber-java
+cucumber-junit
+cucumber-jvm-deps
+cucumber-reporting
+hamcrest-core
+gherkin
+selenium-java 
+junit 
+
+
+step 4
+-------
+we need to add cucumber plugin for eclipse   from help-market place 
+search for cucumber
+  natural 
+  cucumber eclipse e plugin
+
+Configure Cucumber with Maven(best method )
+
+Step 1 – Create a new Maven Project.
+Click here to know the steps to create a new Maven project –  How to create a Maven project.
+
+Step 2 – Open pom.xml of the project
+       
+ 1. Go to package explorer on the left-hand side of Eclipse.
+         2. Expand the project CucumberTest.
+         3. Locate pom.xml file
+         4. Add dependencies to POM.XML
+
+Step 3 − Add dependency for selenium
+
+<dependency>
+     <groupId>org.seleniumhq.selenium</groupId>
+     <artifactId>selenium-java</artifactId>
+     <version>4.15.0</version>
+</dependency>
+
+Step 4 –  Add dependency for Cucumber-Java
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-java</artifactId>
+    <version>7.14.0</version>
+</dependency>
+
+Step 5 – Add dependency for Cucumber-JUnit
+
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>7.14.0</version>
+    <scope>test</scope>
+</dependency>
+Step 6 –  Add dependency for JUnit
+
+<dependency>
+   <groupId>junit</groupId>
+   <artifactId>junit</artifactId>
+   <version>4.13.2</version>
+   <scope>test</scope>
+</dependency>
+
+
+
+After adding the above mention dependencies, pom.xml looks like the  below
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>org.example</groupId>
+  <artifactId>Cucumber_JUnit4_Demo</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+ 
+  <name>Cucumber_JUnit4_Demo</name>
+  <url>http://maven.apache.org</url>
+ 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <cucumber.version>7.14.0</cucumber.version>
+    <selenium.version>4.15.0</selenium.version>
+    <junit.version>4.13.2</junit.version>
+  </properties>
+ 
+  <dependencies>
+ 
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+ 
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+ 
+    <!-- Selenium -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+ 
+    <!-- JUnit4 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+ 
+</project>
+
+feature file
+-----------------
+in cucumber the entry step is feature file 
+this feature file  was written in general English 
+gherkin ------ language which contains certain key words 
+we create one feature file which contains number of scenarios  and created by using gherkin language 
+this feature can be created by anybody 
+the name should be anything and extension is .feature 
+
+Step definitions 
+-----------------------
+for every statement in a feature file should implement the step definition 
+if we want to run multiple feature file then we create test runner class
+
+test runner class
+---------------------
+need to mention the location of feature and step definition file
+
+
+import org.junit.runner.RunWith;
+
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features ="featue file path",
+	glue="name of the step definathion package"
+		
+		)
+public class TestRunner {
+
+}
+
+ 
+
+keywords.
+---------
+keywords
+---------
+Feature: Name of the test
+ Scenario: one scenario description 
+  Given--step is used to set the context
+  When--step is the action/interaction with the system
+  Then---step for representing the outcome /output
+  And--step for extending the previous step
+
+feature file:
+------------
+------------
+it can be created by non it or it guys. either one of them
+the extension of the feature file is .feature
+
+how to create
+------------
+step 1:
+-------
+create a folder
+----------------
+right click on project --->new--->directory--name it
+step 2
+-----
+crate a feature file
+--------------------
+right click on folder ---->new-->file--name
+
+Feature:name of the functionality
+ Scenario:name of  
+
+
+run the feature file
+
+we get missing steps 
+just copy the four steps
+
+step definitaion :
+------------------
+==================
+java  class 
+go to test -->new package-->new class-->name
+paste the above four steps in step definiation
+
+Test runner/junit:
+---------------
+it is used to produce a reports
+
+java  class 
+go to test -->new package-->new class-->name
+above class name we want to mention 
+@RunWith(Cucumber.class)
+@CucumberOptions(
+features="path of the feature file"
+glue="package Name"
+)
+
+
+how to create maven:
+--------------------
+jdk
+Eclipse/intellij
+cucumber plugin and natural plugin in eclipse through market
+cucumber plugin for intellij
+set environment variables
+  java home 
+  maven home
+  M2home
+
+--------
+click on new
+then go to others
+after that click on maven
+give group id and artifact id 
+ckick on finfish
+
+------
+then go the pom.xml
+add dependencies which are mention below
+1 Cucumber-core
+2 Cucumber-html
+3 cobertura code-coverage
+4 Cucumber-java
+5 Cucumber-junit
+6 Cucumber-jvm-deps
+7 Cucumber-reporting
+8 Hamcrest-core
+9 Gherkin
+10 Juint
+11 Selenium-java
+
+Step 4
+------
+
+Project name
+  |
+  Features(folder)
+  |
+  pageObjects(packages)
+  |
+  stepDefinitions
+  |
+  utilities(packages)
+  |
+  Drivers(folder)
+  |
+  target(reports)
+  |
+  pom.xml
+
+step 4:
+-------
+copy Drivers in to "drivers folder.
+
+step 5:  automation test cases
+--------
+create the login.feature under feature folder
+create the login.class under pageobjectspackage 
+create steps.java under stepDefinations packaged  and implement required methods 
+create testRunner.java under myRunner package 
+
+
+real time project folder
+===================
+
+bdd-automation-project/
+│
+├── pom.xml (or build.gradle)        // Maven or Gradle build file for dependencies
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── com/
+│   │           └── myproject/
+│   │               ├── config/          // Configuration classes (for reading properties, etc.)
+│   │               │   └── ConfigReader.java
+│   │               ├── pages/           // Page Object Model (POM) classes
+│   │               │   ├── LoginPage.java
+│   │               │   └── HomePage.java
+│   │               ├── utils/           // Utility classes (e.g., WebDriverFactory, Logger)
+│   │               │   └── WebDriverFactory.java
+│   │               ├── runners/         // Cucumber test runners
+│   │               │   └── TestRunner.java
+│   │               ├── steps/           // Step definitions for BDD features
+│   │               │   ├── LoginSteps.java
+│   │               │   └── HomeSteps.java
+│   │               
+│   │                      
+│   ├── test/
+│   │   └── java/
+│   │       └── com/
+│   │           └── myproject/
+│   │               ├── features/        // BDD feature files (Cucumber syntax)
+│   │               │   ├── login.feature
+│   │               │   └── home.feature
+│   │               ├── resources/       // Test data files (CSV, JSON, etc.)
+│   │               │   └── testdata.csv
+│   │               └── testng.xml        // TestNG XML configuration file for running tests
+└── reports/                          // Folder for generated reports (TestNG, Cucumber, screenshots)
+    ├── index.html                   // Cucumber report (generated after tests)
+    ├── screenshots/  
+               // Folder for screenshots taken during tests
+
+
+Cucumber
+=============
+Cucumber is a tool used in Behavior-Driven Development (BDD), 
+which is a way of writing tests that everyone on the team can understand—developers, testers, 
+and even non-technical people like business analysts and product owners.
+Cucumber allows you to write test cases using a simple language called Gherkin.
+This language is easy for non-technical people to read and understand.
+The tests describe how the software should behave from the user’s perspective, using everyday language.
+
+
+What is a Feature?
+A Feature is a high level description of a specific part of the software that we want to test.
+It usually matches a user story or requirement, which describes what the software should do.
+In feture file which contains one or moe scenarios 
+
+You’ll find Feature files in the src/test/resources folder in your project.
+we will save any file  .feature file extension 
+
+Feature represents Business requirement.
+Feature File acts as a Test Suite which consists of all Scenarios.
+
+Sceanrios
+========
+In Cucumber Testcases are represented as Scenarios.
+Scenarios contain Steps which are equivalent to test Steps and use the following keywords (Gherkin syntax) to denote them:
+Given, When, Then, But, and And (case sensitive).
+
+
+•	Given: Preconditions are mentioned in the Given keyword
+•	When: The purpose of the When Steps is to describe the user action.
+•	Then: The purpose of Then Steps is to observe the expected output.
+The observations should be related to the business value/benefit of your Feature description.
+
+•	And: This is used for statements that are an addition to the previous Steps and represent positive statements.
+•	But: This is used for statements that are an addition to previous Steps and represent negative statements.
+
+
+Scenario Outline: 
+===============
+
+Scenario Outline keyword can be used to run the same Scenario multiple times, with different combinations of values. 
+The Parameterized variables are specified within angular brackets <> which acts as Headers in the examples table and seperated by pipeline 
+Test data for Scenario outline will be placed under the scenario using keyword “Examples”
+If we need to send any type data in to step definition then we need to give below format 
+
+We need to enter ^  symbol in starting and end $ symbol in end and where we are passing data should be in  this format --- (.+)
+ below example showing that case
+@When("^user login into application with (.+) and (.+) cobinations with any kind of data$")
+public void user_login_into_application_with_and_cobinations_with_any_kind_of_data(String string, String string2) {
+	
+}
+
+Background
+===========
+this keyword is used to define steps that are common to all the tests in the feature file. 
+
+
+What Is Page Object Model (POM)?
+The Page Object model is an object design pattern in Selenium, where web pages are represented as classes, the various elements on the page are defined as variables in the class and all possible user interactions can then be implemented as methods in the class.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
